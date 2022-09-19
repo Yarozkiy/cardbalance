@@ -20,7 +20,7 @@ public class MoneyTransferTest {
     int endBalance1;
     int endBalance2;
     int sum;
-    DashboardPage dashboardPage;
+        DashboardPage dashboardPage;
 
     @BeforeEach
     void SetUp() {
@@ -30,19 +30,19 @@ public class MoneyTransferTest {
         val verificationPage = loginPage.validLogin(authInfo);
         val verificationCode = DataHelper.getVerificationCodeFor(authInfo);
         dashboardPage = verificationPage.validVerify(verificationCode);
-        begBalance1 = dashboardPage.getBalance(dashboardPage.card1);
-        begBalance2 = dashboardPage.getBalance(dashboardPage.card2);
+        begBalance1 = dashboardPage.getBalance(dashboardPage.getCard1());
+        begBalance2 = dashboardPage.getBalance(dashboardPage.getCard2());
     }
 
     @Test
     @DisplayName("Перевод денег сo второй карты на первую")
     void shouldTransferMoneyFromSecondToFirstCard() {
         sum = 100;
-        val topUpPage = dashboardPage.clickTopUp(dashboardPage.card1);
+        val topUpPage = dashboardPage.clickTopUp(dashboardPage.getCard1());
         val cardNum = DataHelper.getSecondCard().getNumber();
         val dashboardPage2 = topUpPage.successfulTopUp(Integer.toString(sum), cardNum);
-        endBalance1 = dashboardPage2.getBalance(dashboardPage2.card1);
-        endBalance2 = dashboardPage2.getBalance(dashboardPage2.card2);
+        endBalance1 = dashboardPage2.getBalance(dashboardPage2.getCard1());
+        endBalance2 = dashboardPage2.getBalance(dashboardPage2.getCard2());
         assertEquals(begBalance1 + sum, endBalance1);
         assertEquals(begBalance2 - sum, endBalance2);
     }
@@ -50,11 +50,11 @@ public class MoneyTransferTest {
     @DisplayName("Перевод денег с первой карты на вторую")
     void shouldTransferMoneyFromFirstToSecondCard() {
         sum = 100;
-        val topUpPage = dashboardPage.clickTopUp(dashboardPage.card2);
+        val topUpPage = dashboardPage.clickTopUp(dashboardPage.getCard2());
         val cardNum = DataHelper.getFirstCard().getNumber();
         val dashboardPage2 = topUpPage.successfulTopUp(Integer.toString(sum), cardNum);
-        endBalance1 = dashboardPage2.getBalance(dashboardPage2.card1);
-        endBalance2 = dashboardPage2.getBalance(dashboardPage2.card2);
+        endBalance1 = dashboardPage2.getBalance(dashboardPage2.getCard1());
+        endBalance2 = dashboardPage2.getBalance(dashboardPage2.getCard2());
         assertEquals(begBalance1 - sum, endBalance1);
         assertEquals(begBalance2 + sum, endBalance2);
     }
@@ -63,7 +63,7 @@ public class MoneyTransferTest {
    // @DisplayName("Не должен переводить больше, чем есть на карте")
     //void shouldNotTransferMoreThanAvailable() {
         //sum = begBalance1 + 100;
-      //  val topUpPage = dashboardPage.clickTopUp(dashboardPage.card2);
+      //  val topUpPage = dashboardPage.clickTopUp(dashboardPage.getCard2());
        // val cardNum = DataHelper.getFirstCard().getNumber();
       //  val dashboardPage2 = topUpPage.successfulTopUp(Integer.toString(sum), cardNum);
       //  topUpPage.unsuccessfulTopUp(Integer.toString(sum), cardNum);
