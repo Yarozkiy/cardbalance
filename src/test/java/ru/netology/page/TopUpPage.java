@@ -1,11 +1,13 @@
 package ru.netology.page;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.Keys;
 
+import java.time.Duration;
+
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Selenide.*;
 
 public class TopUpPage {
     private SelenideElement sumField = $("div[data-test-id=amount] input");
@@ -18,7 +20,7 @@ public class TopUpPage {
         sumField.setValue(sum);
         accountField.sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
         accountField.setValue(cardNum);
-        sleep(5000);
+        $(topUpButton).shouldBe(visible, Duration.ofSeconds(5));
         topUpButton.click();
         return new DashboardPage();
     }
