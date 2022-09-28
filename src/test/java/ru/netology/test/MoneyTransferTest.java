@@ -1,5 +1,4 @@
 package ru.netology.test;
-
 import com.codeborne.selenide.Condition;
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
