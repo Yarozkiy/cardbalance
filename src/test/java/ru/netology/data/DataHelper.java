@@ -1,43 +1,22 @@
 package ru.netology.data;
 
-import lombok.Value;
-import ru.netology.page.CardChoosePage;
-import java.util.Random;
+import lombok.Data;
 
+@Data
 public class DataHelper {
+    private final String login;
+    private final String password;
+    private final String verificationCode;
+    private final String[] cards;
 
-    private DataHelper() { }
-
-    @Value
-    public static class AuthInfo {
-        private String login;
-        private String password;
+    public DataHelper() {
+        this.login = "vasya";
+        this.password = "qwerty123";
+        this.verificationCode = "12345";
+        this.cards = new String[]{"5559 0000 0000 0001", "5559 0000 0000 0002"};
     }
 
-    public static AuthInfo getAuthInfo() {
-
-        return new AuthInfo("vasya", "qwerty123");
-    }
-
-    @Value
-    public static class VerificationCode {
-        private String code;
-    }
-
-    public static VerificationCode getVerificationCodeFor(AuthInfo authInfo) {
-
-        return new VerificationCode("12345");
-    }
-    @Value
-    public static class MoneyTransfer {
-        private String cardNumber;
-    }
-    public static MoneyTransfer firstCardInfo() {
-
-        return new MoneyTransfer("5559 0000 0000 0001");
-    }
-    public static MoneyTransfer secondCardInfo() {
-
-        return new MoneyTransfer("5559 0000 0000 0002");
+    public String getCard(int indexCard) {
+        return cards[indexCard];
     }
 }

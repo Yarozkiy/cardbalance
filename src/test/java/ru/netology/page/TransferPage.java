@@ -1,23 +1,50 @@
 package ru.netology.page;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-import ru.netology.data.DataHelper;
 
-import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Condition.hidden;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$x;
 
 public class TransferPage {
+    private SelenideElement amountInput = $x("//span[@data-test-id='amount']//input");
+    private SelenideElement fromInput = $x("//span[@data-test-id='from']//input");
+    private SelenideElement toInput = $x("//span[@data-test-id='to']//input");
+    private SelenideElement transferButton = $x("//button[@data-test-id='action-transfer']");
+    private SelenideElement cancelButton = $x("//button[@data-test-id='action-cancel']");
+    private SelenideElement errorNotification = $x("//div[@data-test-id='error-notification']");
+    private SelenideElement errorButton = $x("//div[@data-test-id='error-notification']/button");
 
-    private SelenideElement countField = $("[data-test-id='amount'] input");
-    private SelenideElement cardNumberField = $("[data-test-id='from'] input");
-    private SelenideElement putMoneyButton = $("[data-test-id='action-transfer']");
-
-    public void putTransferAmount(String transferAmount) {
-        countField.setValue(transferAmount);
+    public TransferPage() {
+        amountInput.should(visible);
+        fromInput.should(visible);
+        toInput.should(visible);
+        transferButton.should(visible);
+        cancelButton.should(visible);
+        errorNotification.should(hidden);
+        errorButton.should(hidden);
     }
 
-    public DashboardPage putMoneyCard(DataHelper.MoneyTransfer info) {
-        cardNumberField.setValue(info.getCardNumber());
-        putMoneyButton.click();
+    public void transfer(String amount, String cardFrom) {
+        amountInput.val(amount);
+        fromInput.val(cardFrom);
+        transferButton.click();
+    }
+
+    public void cancelTransfer(String amount, String cardFrom) {
+        amountInput.val(amount);
+        fromInput.val(cardFrom);
+        cancelButton.click();
+    }
+
+    public DashboardPage checkNotification(Condition status) {
+        errorNotification.should(status);
+        if (status.equals(visible)) {
+            errorButton.click();
+            errorNotification.should(hidden);
+            cancelButton.click();
+        }
         return new DashboardPage();
     }
 }
